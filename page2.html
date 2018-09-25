@@ -134,6 +134,11 @@
 var seconds = 60;   
 var timer;
 
+ const quizContainer = document.getElementById("quiz");
+ const resultsContainer = document.getElementById("results");
+ const submitButton = document.getElementById("submit");
+ 
+
  var run = function() {
       timer = setInterval(countdown, 1000);
     }
@@ -225,10 +230,6 @@ run();
     resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
   }
 
-  const quizContainer = document.getElementById("quiz");
-  const resultsContainer = document.getElementById("results");
-  const submitButton = document.getElementById("submit");
- 
   // display quiz right away
   buildQuiz();
 
