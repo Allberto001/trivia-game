@@ -1,0 +1,15 @@
+body{
+    background-image:url("../images/background.jpg");
+}
+.header{
+    text-align: center;
+   
+}
+.questions{
+    text-align: center;
+    width: 50%;
+    margin: 20px auto;
+    background-color: antiquewhite;
+    padding: 10px;
+    line-height: 30px;
+}
