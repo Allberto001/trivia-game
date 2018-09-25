@@ -174,12 +174,12 @@ run();
 
     // for each question...
     myQuestions.forEach((currentQuestion, questionNumber) => {
-      // we'll want to store the list of answer choices
+      // we'll want to store the list of answer that the user chose
       const answers = [];
 
       // and for each available answer...
       for (letter in currentQuestion.answers) {
-        // ...add an HTML radio button
+        // add an HTML radio button, which is the buttons for that allows you to click the answers you want
         answers.push(
           `<label>
             <input type="radio" name="question${questionNumber}" value="${letter}">
@@ -189,7 +189,7 @@ run();
         );
       }
 
-      // add this question and its answers to the output
+      // add this question and its answers to the output to display in your page
       output.push(
         `<div class="question"> ${currentQuestion.question} </div>
         <div class="answers"> ${answers.join("")} </div>`
@@ -202,29 +202,29 @@ run();
 
 
   function showResults() {
-    // gather answer containers from our quiz
+    // gather answers from myquestions object
     const answerContainers = quizContainer.querySelectorAll(".answers");
 
     // keep track of user's answers
     var numCorrect = 0;
 
-    // using the .foreach loop
+    // using the .foreach loop for the selected answers
     myQuestions.forEach((currentQuestion, questionNumber) => {
       // find selected answer
       const answerContainer = answerContainers[questionNumber];
       const selector = `input[name=question${questionNumber}]:checked`;
       const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
-      // if answer is correct
+      // what to do when the answers are correct or wrong
       if (userAnswer === currentQuestion.correctAnswer) {
-        // add to the number of correct answers
+        // add to the number of correct answers the results are shown
         numCorrect++;
 
-        // color the answers green
+        // if the answers are correct then it will turn green
         answerContainers[questionNumber].style.color = "lightgreen";
       } else {
-        // if answer is wrong or blank
-        // color the answers red
+        // if you answered the question wrong or left it blank the it turns red
+  
         answerContainers[questionNumber].style.color = "red";
       }
     });
@@ -235,7 +235,7 @@ run();
 
   buildQuiz();
 
-  // on submit, show results
+  // once the submit button is clicked then it'll show your results
   submitButton.addEventListener("click", showResults);
 
 </script>  
