@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Trivia Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css" >
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" >
+    
+</head>
+<body>
+<div class="header">
+    <img src="assets/images/title.png" alt="Yugioh GX Duel Academy" width="30%">
+</div>
+
+<div class="questions">
+
+        <h2>Quiz</h2>
+        <div id="time-left"></div>
+
+        <div id="quiz"></div>
+              
+              <button id="submit">Submit Quiz</button>
+        
+        <div id="results"></div>      
+</div>    
+    
+<script>
+ var myQuestions = [
+    {
+      question: "1) What is the minimum amount of cards allowed in a deck?",
+      answers: {
+        a: "30",
+        b: "40",
+        c: "50"
+      },
+      correctAnswer: "b"
+    },
+    {
+        question: "2) If a monster card is blue, what type of monster is it?",
+        answers: {
+          a: "Fusion Monster",
+          b: "Synchro Monster",
+          c: "Ritual Monster",
+          d: "Effect Monster"
+        },
+        correctAnswer: "c"
+      },
+      {
+        question: "3) True or False, you can activate a normal trap card immediately from your hand?",
+        answers: {
+          a: "true",
+          b: "false"
+          
+        },
+        correctAnswer: "b"
+      },
+      {
+      question: "4) What are the proper steps in a turn after the draw phase has been completed?",
+        answers: {
+          a: "standby phase, main phase, battle phase, and end phase",
+          b: "main phase, standby phase, battle phase, main phase 2, and end phase",
+          c: "main phase, battle phase, main phase 2, and end phase",
+          d: "standby phase, main phase, battle phase, main phase 2, and end phase"
+          
+        },
+        correctAnswer: "d"
+      },
+      {
+      question: "5) how many sacrifices are required to summon a 5 star normal monster?",
+        answers: {
+          a: "1",
+          b: "3",
+          c: "none",
+          d: "2"
+          
+        },
+        correctAnswer: "a"
+      },
+      {
+      question: "6) Which one of these is NOT an attribute of a monster card?",
+        answers: {
+          a: "Light",
+          b: "Earth",
+          c: "Electric",
+          d: "Wind"
+          
+        },
+        correctAnswer: "c"
+      },
+      {
+      question: "7) What type of monster cards will you find inside a extra deck?",
+        answers: {
+          a: "Ritual Monsters",
+          b: "Fusion Monsters",
+          c: "Effect Monsters",
+          d: "Spirit Monsters"
+          
+        },
+        correctAnswer: "b"
+      },
+      {
+      question: "8) The maximum number of cards you can have in your hands before ending your turn?",
+        answers: {
+          a: "5",
+          b: "6",
+          c: "8",
+          d: "7"
+          
+        },
+        correctAnswer: "b"
+      },
+      {
+      question: "9) What is the maximum number of cards the extra deck may contain?",
+        answers: {
+          a: "20",
+          b: "10",
+          c: "15",
+          d: "40"
+          
+        },
+        correctAnswer: "c"
+      },
+      {
+      question: "10) True or False, can i activate a normal spell card in my opponents turn?",
+        answers: {
+          a: "False",
+          b: "True"
+          
+        },
+        correctAnswer: "b"
+      }
+    ];
+var seconds = 60;   
+var timer;
+
+ var run = function() {
+      timer = setInterval(countdown, 1000);
+    }
+// creating my countdown timer
+ var countdown = function() {
+
+      seconds--;
+
+      $("#time-left").html(seconds);
+    // if the timer reaches 0 then it will stop and will automaically submit what you've done so far
+      if (seconds === 0) {
+
+        stop();
+
+        $("#submit").click();
+      }
+      
+    }
+
+var stop = function() {
+    clearTimeout(timer);
+}
+
+run();
+
+
+ function buildQuiz() {
+    // we'll need a place to store the HTML output
+    const output = [];
+
+    // for each question...
+    myQuestions.forEach((currentQuestion, questionNumber) => {
+      // we'll want to store the list of answer choices
+      const answers = [];
+
+      // and for each available answer...
+      for (letter in currentQuestion.answers) {
+        // ...add an HTML radio button
+        answers.push(
+          `<label>
+            <input type="radio" name="question${questionNumber}" value="${letter}">
+            ${letter} :
+            ${currentQuestion.answers[letter]}
+          </label>`
+        );
+      }
+
+      // add this question and its answers to the output
+      output.push(
+        `<div class="question"> ${currentQuestion.question} </div>
+        <div class="answers"> ${answers.join("")} </div>`
+      );
+    });
+
+    // finally combine our output list into one string of HTML and put it on the page
+    quizContainer.innerHTML = output.join("");
+  }
+
+
+  function showResults() {
+    // gather answer containers from our quiz
+    const answerContainers = quizContainer.querySelectorAll(".answers");
+
+    // keep track of user's answers
+    let numCorrect = 0;
+
+    // for each question...
+    myQuestions.forEach((currentQuestion, questionNumber) => {
+      // find selected answer
+      const answerContainer = answerContainers[questionNumber];
+      const selector = `input[name=question${questionNumber}]:checked`;
+      const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+      // if answer is correct
+      if (userAnswer === currentQuestion.correctAnswer) {
+        // add to the number of correct answers
+        numCorrect++;
+
+        // color the answers green
+        answerContainers[questionNumber].style.color = "lightgreen";
+      } else {
+        // if answer is wrong or blank
+        // color the answers red
+        answerContainers[questionNumber].style.color = "red";
+      }
+    });
+
+    // show number of correct answers out of total
+    resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+  }
+
+  const quizContainer = document.getElementById("quiz");
+  const resultsContainer = document.getElementById("results");
+  const submitButton = document.getElementById("submit");
+ 
+  // display quiz right away
+  buildQuiz();
+
+  // on submit, show results
+  submitButton.addEventListener("click", showResults);
+
+</script>  
+
+<script type="text/javascript" src="assets/js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
