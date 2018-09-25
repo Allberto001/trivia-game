@@ -155,7 +155,9 @@ var timer;
 
         $("#submit").click();
       }
-      
+      else{
+        $("#submit").on("click", stop);
+      }
     }
 
 var stop = function() {
@@ -205,7 +207,7 @@ run();
     // keep track of user's answers
     let numCorrect = 0;
 
-    // for each question...
+    // using the .foreach loop
     myQuestions.forEach((currentQuestion, questionNumber) => {
       // find selected answer
       const answerContainer = answerContainers[questionNumber];
